@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from "react-redux";
+import mapStoreToProps from "../../redux/mapStoreToProps";
+
 
 // This is one of our simplest components
 // It doesn't have local state, so it can be a function component.
@@ -26,7 +29,7 @@ class InfoPage extends React.Component {
   }
 
   handleClick = () => {
-
+    this.props.dispatch({type: 'ADD_ITEM', payload: this.state.newItem})
     }
 
   handleChange = (event, eventType) => {
@@ -61,4 +64,4 @@ class InfoPage extends React.Component {
   }
 }
 
-export default InfoPage;
+export default connect(mapStoreToProps)(InfoPage);
