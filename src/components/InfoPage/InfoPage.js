@@ -26,7 +26,8 @@ class InfoPage extends React.Component {
       description : '',
       imageUrl : ''
     },
-    toggle: false
+    toggle: false,
+    itemId: 0
   }
 
   componentDidMount = () => {
@@ -48,7 +49,6 @@ class InfoPage extends React.Component {
         [eventType]: event.target.value
       }
     });
-    // console.log(this.state);
   }
 
   deleteItem = (userId, itemId) => {
@@ -64,9 +64,9 @@ class InfoPage extends React.Component {
   showEditItem = (userId, itemId) => {
     if (userId === this.props.store.user.id) {
       this.setState({
-        toggle: !this.state.toggle
+        toggle: !this.state.toggle,
+        itemId: itemId
       })
-      console.log(this.state);
     } else {
       alert('This item does not belong to you!!!!!!!!!!');
     }
@@ -84,51 +84,72 @@ class InfoPage extends React.Component {
         <div>
           <p>Info Page</p>
         </div>
+
         {this.props.store.user.id &&
         <>
+
         <input
           onChange={(event) => this.handleChange(event, 'description')}
           type="text"
           placeholder="Description"
         />
+
         <input
           onChange={(event) => this.handleChange(event, 'imageUrl')}
           type="text"
           placeholder="Image URL"
         />
+
         <button onClick={this.handleClick}>Submit</button>
+
         </>
         }
+
         <ul>
           {this.props.store.items.map(item => {
-          return <li key={item.id}>{item.description}
-          <img src={item.image_url} alt={item.description}/>
+          return <li key={item.id}>
+            {item.description}
+            <img src={item.image_url} alt={item.description}/>
+
           {item.user_id === this.props.store.user.id ? 
+          
           <>
             <button onClick={() => this.deleteItem(item.user_id, item.id)}>Delete</button>
             <button value={item.id} onClick={() => this.showEditItem(item.user_id, item.id)}>Edit</button>
           </>
+
           :
-          <></>}
-          {this.state.toggle ?
+
+          <></>
+          }
+
+          {this.state.toggle && item.id === this.state.itemId ?
           <>
+
           <input
             onChange={(event) => this.handleChange(event, 'description')}
             type="text"
             placeholder="Description"
           />
+
           <input
             onChange={(event) => this.handleChange(event, 'imageUrl')}
             type="text"
             placeholder="Image URL"
           />
+
           <button onClick={() => this.submitEditItem(item.id)}>Submit</button>
+
           </>
+
           :
+
           <></>
           }
+
           </li>
         })}
+
         </ul>
       </>
     );
