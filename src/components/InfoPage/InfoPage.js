@@ -81,7 +81,11 @@ class InfoPage extends React.Component {
           {this.props.store.items.map(item => {
           return <li key={item.id}>{item.description}
           <img src={item.image_url} alt={item.description}/>
-          <button onClick={() => this.deleteItem(item.user_id, item.id)}>Delete</button></li>
+          {item.user_id === this.props.store.user.id ? 
+          <button onClick={() => this.deleteItem(item.user_id, item.id)}>Delete</button>
+          :
+          <></>}
+          </li>
         })}
         </ul>
       </>
