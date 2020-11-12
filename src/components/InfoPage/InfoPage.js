@@ -25,7 +25,8 @@ class InfoPage extends React.Component {
     newItem : {
       description : '',
       imageUrl : ''
-    }
+    },
+    toggle: false
   }
 
   componentDidMount = () => {
@@ -60,12 +61,31 @@ class InfoPage extends React.Component {
     }
   }
 
+  showEditItem = (userId, itemId) => {
+    if (userId === this.props.store.user.id) {
+      this.setState({
+        toggle: !this.state.toggle
+      })
+      console.log(this.state);
+    } else {
+      alert('This item does not belong to you!!!!!!!!!!');
+    }
+  }
+
+  submitEditItem = (itemId) => {
+    this.props.dispatch({type: 'EDIT_ITEM', payload: itemId});
+  }
+
+
+
   render() {
     return (
       <>
         <div>
           <p>Info Page</p>
         </div>
+        {this.props.store.user.id &&
+        <>
         <input
           onChange={(event) => this.handleChange(event, 'description')}
           type="text"
@@ -77,14 +97,36 @@ class InfoPage extends React.Component {
           placeholder="Image URL"
         />
         <button onClick={this.handleClick}>Submit</button>
+        </>
+        }
         <ul>
           {this.props.store.items.map(item => {
           return <li key={item.id}>{item.description}
           <img src={item.image_url} alt={item.description}/>
           {item.user_id === this.props.store.user.id ? 
-          <button onClick={() => this.deleteItem(item.user_id, item.id)}>Delete</button>
+          <>
+            <button onClick={() => this.deleteItem(item.user_id, item.id)}>Delete</button>
+            <button value={item.id} onClick={() => this.showEditItem(item.user_id, item.id)}>Edit</button>
+          </>
           :
           <></>}
+          {this.state.toggle ?
+          <>
+          <input
+            onChange={(event) => this.handleChange(event, 'description')}
+            type="text"
+            placeholder="Description"
+          />
+          <input
+            onChange={(event) => this.handleChange(event, 'imageUrl')}
+            type="text"
+            placeholder="Image URL"
+          />
+          <button onClick={() => this.submitEditItem(item.id)}>Submit</button>
+          </>
+          :
+          <></>
+          }
           </li>
         })}
         </ul>
