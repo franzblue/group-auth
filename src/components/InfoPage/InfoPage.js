@@ -50,6 +50,16 @@ class InfoPage extends React.Component {
     // console.log(this.state);
   }
 
+  deleteItem = (userId, itemId) => {
+    console.log('clicked delete');
+    if(userId === this.props.store.user.id) {
+      this.props.dispatch({type: 'DELETE_ITEM', payload: itemId});
+    }
+    else {
+      alert('This item does not belong to you!');
+    }
+  }
+
   render() {
     return (
       <>
@@ -70,7 +80,8 @@ class InfoPage extends React.Component {
         <ul>
           {this.props.store.items.map(item => {
           return <li key={item.id}>{item.description}
-          <img src={item.image_url} alt={item.description}/></li>
+          <img src={item.image_url} alt={item.description}/>
+          <button onClick={() => this.deleteItem(item.user_id, item.id)}>Delete</button></li>
         })}
         </ul>
       </>
