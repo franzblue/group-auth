@@ -28,8 +28,16 @@ class InfoPage extends React.Component {
     }
   }
 
+  componentDidMount = () => {
+    this.getItem();
+  }
+
+  getItem = () => {
+    this.props.dispatch({type: 'GET_ITEM'});
+  }
+
   handleClick = () => {
-    this.props.dispatch({type: 'ADD_ITEM', payload: this.state.newItem})
+    this.props.dispatch({type: 'ADD_ITEM', payload: this.state.newItem});
     }
 
   handleChange = (event, eventType) => {
@@ -59,6 +67,12 @@ class InfoPage extends React.Component {
           placeholder="Image URL"
         />
         <button onClick={this.handleClick}>Submit</button>
+        <ul>
+          {this.props.store.items.map(item => {
+          return <li key={item.id}>{item.description}
+          <img src={item.image_url} alt={item.description}/></li>
+        })}
+        </ul>
       </>
     );
   }
