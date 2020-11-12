@@ -28,8 +28,16 @@ class InfoPage extends React.Component {
     }
   }
 
+  componentDidMount = () => {
+    this.getItem();
+  }
+
+  getItem = () => {
+    this.props.dispatch({type: 'GET_ITEM'});
+  }
+
   handleClick = () => {
-    this.props.dispatch({type: 'ADD_ITEM', payload: this.state.newItem})
+    this.props.dispatch({type: 'ADD_ITEM', payload: this.state.newItem});
     }
 
   handleChange = (event, eventType) => {
@@ -40,6 +48,16 @@ class InfoPage extends React.Component {
       }
     });
     // console.log(this.state);
+  }
+
+  deleteItem = (userId, itemId) => {
+    console.log('clicked delete');
+    if(userId === this.props.store.user.id) {
+      this.props.dispatch({type: 'DELETE_ITEM', payload: itemId});
+    }
+    else {
+      alert('This item does not belong to you!');
+    }
   }
 
   render() {
@@ -59,6 +77,17 @@ class InfoPage extends React.Component {
           placeholder="Image URL"
         />
         <button onClick={this.handleClick}>Submit</button>
+        <ul>
+          {this.props.store.items.map(item => {
+          return <li key={item.id}>{item.description}
+          <img src={item.image_url} alt={item.description}/>
+          {item.user_id === this.props.store.user.id ? 
+          <button onClick={() => this.deleteItem(item.user_id, item.id)}>Delete</button>
+          :
+          <></>}
+          </li>
+        })}
+        </ul>
       </>
     );
   }
