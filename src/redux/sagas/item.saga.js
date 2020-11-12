@@ -31,10 +31,23 @@ function* deleteItem(action) {
     }
 }
 
+function* editItem(action) {
+    console.log('action', action);
+    try {
+        yield axios.put(`/api/shelf/${action.payload.itemId}`, action.payload)
+        yield put({type: "GET_ITEM"});
+    }
+    catch (error){
+        console.log('item edit failed', error);
+    }
+
+}
+
 function* itemSaga() {
   yield takeEvery("ADD_ITEM", addItem);
   yield takeEvery("GET_ITEM", getItem);
   yield takeEvery("DELETE_ITEM", deleteItem);
+  yield takeEvery("EDIT_ITEM", editItem);
 }
 
 
