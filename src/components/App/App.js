@@ -19,8 +19,10 @@ import InfoPage from '../InfoPage/InfoPage';
 import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+import ShelfPage from '../ShelfPage/ShelfPage';
 
 import './App.css';
+
 
 class App extends Component {
   componentDidMount() {
@@ -91,6 +93,11 @@ class App extends Component {
               path="/home"
               component={LandingPage}
               authRedirect="/user"
+            />
+
+            <Route
+              path="/shelf/:id"
+              component={ShelfPage}
             />
 
             {/* If none of the other routes matched, we will show a 404. */}
