@@ -21,6 +21,16 @@ function* getItem() {
     }
 }
 
+function* getUserItems(action) {
+    try {
+        const getResponse = yield axios.get(`/api/shelf/${action.payload}`);
+        yield put({ type: 'SET_ITEM', payload: getResponse.data});
+    }
+    catch (error){
+        console.log('item GET failed', error);
+    }
+}
+
 function* deleteItem(action) {
     try {
         yield axios.delete(`/api/shelf/${action.payload}`);
@@ -48,6 +58,7 @@ function* itemSaga() {
   yield takeEvery("GET_ITEM", getItem);
   yield takeEvery("DELETE_ITEM", deleteItem);
   yield takeEvery("EDIT_ITEM", editItem);
+  yield takeEvery("GET_USER_ITEMS", getUserItems);
 }
 
 
